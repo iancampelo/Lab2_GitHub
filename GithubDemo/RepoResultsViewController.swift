@@ -23,6 +23,8 @@ class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableV
 
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
         
         // Initialize the UISearchBar
         searchBar = UISearchBar()
@@ -73,9 +75,19 @@ class RepoResultsViewController: UIViewController, UITableViewDelegate, UITableV
         
         let repository = repos?[indexPath.row]
         let ownerName = repository!.ownerHandle ?? ""
+        let stars = String(describing: repository!.stars!)
+        let forks = String(describing: repository!.forks!)
         
         cell.repoNameLabel.text = repository!.name
         cell.ownerNameLabel.text = "by \(ownerName)"
+        cell.descriptionLabel.text = repository!.repoDescription
+        cell.starLabel.text = stars
+        cell.forkLabel.text = forks
+        
+        if let avatarPath = repository!.ownerAvatarURL{
+            let imageUrl = NSURL(string: avatarPath)
+            cell.imgRepoView.setImageWith(imageUrl! as URL)
+        }
         
         return cell
         
